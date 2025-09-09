@@ -1,0 +1,270 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Clear Sans", "Helvetica Neue", Arial, sans-serif;
+}
+
+body {
+  height: 100vh;
+  width: 100vw;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+
+  color: #ffffff;
+}
+
+.navbar {
+  height: 50px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.nav {
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.container {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  gap: 16px;
+}
+
+.model {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+  flex: 1;
+  max-width: 280px;
+  margin-top: 2rem;
+}
+
+.row {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  width: 100%;
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-5px);
+  }
+  40% {
+    transform: translateX(5px);
+  }
+  60% {
+    transform: translateX(-5px);
+  }
+  80% {
+    transform: translateX(5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.row.shake {
+  animation: shake 0.3s ease-in-out;
+}
+
+.tile {
+  width: 62px;
+  height: 52px;
+  border: 2px solid #d3d6da;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+  position: relative;
+  transition: transform 0.6s;
+  color: black;
+}
+
+.tile.flip {
+  animation: flip 0.6s forwards;
+}
+
+@keyframes flip {
+  0% {
+    transform: rotateX(0);
+  }
+  50% {
+    transform: rotateX(90deg);
+  }
+  51% {
+    transform: rotateX(90deg);
+  } /* mid flip */
+  100% {
+    transform: rotateX(0);
+  }
+}
+
+.tile.correct {
+  background-color: #6aaa64; /* green */
+  border-color: #6aaa64;
+  color: white;
+}
+.tile.present {
+  background-color: #c9b458; /* yellow */
+  border-color: #c9b458;
+  color: white;
+}
+.tile.absent {
+  background-color: #787c7e; /* gray */
+  border-color: #787c7e;
+  color: white;
+}
+
+.keyboard {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px;
+}
+
+.key-row {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+}
+
+.key {
+  height: 58px;
+  min-width: 43px;
+  border-radius: 4px;
+  border: none;
+  background-color: #d3d6da;
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+  color: black;
+  font-size: larger;
+}
+
+.key.wide {
+  flex: 1.5;
+  font-size: 0.75rem;
+}
+
+.key.correct {
+  background-color: #6aaa64;
+  color: white;
+}
+
+.key.present {
+  background-color: #c9b458;
+  color: white;
+}
+
+.key.absent {
+  background-color: #787c7e;
+  color: white;
+}
+
+.footer {
+  height: 50px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.para {
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+  font-size: 0.7rem;
+  color: black;
+  font-weight: bold;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .tile {
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+  }
+
+  .key {
+    height: 50px;
+    min-width: 30px;
+    font-size: 0.8rem;
+  }
+
+  .key.wide {
+    font-size: 0.7rem;
+  }
+}
+
+.message-container {
+  position: fixed;
+  top: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.message {
+  background: #333;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 16px;
+  animation: fadeInOut 2s ease forwards;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  10% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
