@@ -1,12 +1,23 @@
-import { words, common_words } from "./data.js";
-
-const wordss = new Set([...words, ...common_words]);
-
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   let isGameOver = false;
   let currentTile = 0;
   let currentRow = 0;
-  let hidden_word = common_words[Math.floor(Math.random() * 6535)];
+  let hidden_word = "";
+  let words=[];
+  let common_words=[];
+  let wordss=new Set();
+
+  try{
+    const res=await fetch("./words.json");
+    const data=await res.json();
+    words=data.words;
+    common_words=data.common_words;
+    wordss=new Set([...words,...common_words]);
+    hidden_word=common_words[Math.floor(Math.random()*common_words.length)];
+  }catch(err){
+    console.log("failed to load word List",err);
+    showMessage("Failed to Load word List",true);
+  }
 
   function initGame() {
     const keyboards = document.querySelectorAll(".key");
@@ -149,15 +160,17 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!key) return;
 
     if (status === "correct") {
+      key.classList.remove("present","absent");
       key.classList.add("correct");
     } else if (status === "present") {
-      if (!key.classList.contains("correct")) {
+      if (!key.classList.contains("correct") && !key.classList.contains("present")) {
         key.classList.add("present");
       }
     } else if (status === "absent") {
       if (
         !key.classList.contains("correct") &&
-        !key.classList.contains("present")
+        !key.classList.contains("present") &&
+        !key.classList.contains("absent")
       ) {
         key.classList.add("absent");
       }
