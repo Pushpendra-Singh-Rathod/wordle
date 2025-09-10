@@ -1,5 +1,5 @@
 {
-     const words = [
+  "words":[
   "about",
   "above",
   "abuse",
@@ -6538,7 +6538,7 @@
   "sheik",
 ];
 
- const common_words = [
+ "common_words":[
   "which",
   "there",
   "their",
