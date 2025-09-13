@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Wordle - How to Play</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .modal {
+        background: white;
+        border-radius: 12px;
+        max-width: 480px; /* smaller width */
+        padding: 20px; /* reduced padding */
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        text-align: center;
+      }
+
+      .modal h2 {
+        margin: 0 0 12px;
+      }
+
+      .modal p {
+        margin: 8px 0;
+        color: #444;
+      }
+
+      ul {
+        margin: 12px 0;
+        padding-left: 20px;
+        text-align: left;
+      }
+
+      h3 {
+        margin-top: 20px;
+      }
+
+      .example {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin: 12px 0;
+        justify-content: center;
+      }
+
+      .tile {
+        width: 40px;
+        height: 40px;
+        border: 2px solid #ccc;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: 18px;
+        border-radius: 4px;
+      }
+
+      .correct {
+        background: #6aaa64;
+        color: white;
+        border-color: #6aaa64;
+      }
+
+      .present {
+        background: #c9b458;
+        color: white;
+        border-color: #c9b458;
+      }
+
+      .absent {
+        background: #787c7e;
+        color: white;
+        border-color: #787c7e;
+      }
+
+      .go-btn {
+        margin-top: 20px;
+        padding: 10px 20px;
+        background: #6aaa64;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+
+      .go-btn:hover {
+        background: #4e8d4c;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="modal">
+      <h2>How To Play</h2>
+      <p><strong>Guess the Wordle in 6 tries.</strong></p>
+
+      <ul>
+        <li>Each guess must be a valid 5-letter word.</li>
+        <li>
+          The color of the tiles will change to show how close your guess was to
+          the word.
+        </li>
+      </ul>
+
+      <h3>Examples</h3>
+
+      <!-- Example 1 -->
+      <div class="example">
+        <div class="tile correct">W</div>
+        <div class="tile">O</div>
+        <div class="tile">R</div>
+        <div class="tile">D</div>
+        <div class="tile">Y</div>
+      </div>
+      <p><strong>W</strong> is in the word and in the correct spot.</p>
+
+      <!-- Example 2 -->
+      <div class="example">
+        <div class="tile">L</div>
+        <div class="tile present">I</div>
+        <div class="tile">G</div>
+        <div class="tile">H</div>
+        <div class="tile">T</div>
+      </div>
+      <p><strong>I</strong> is in the word but in the wrong spot.</p>
+
+      <!-- Example 3 -->
+      <div class="example">
+        <div class="tile">R</div>
+        <div class="tile">O</div>
+        <div class="tile">G</div>
+        <div class="tile absent">U</div>
+        <div class="tile">E</div>
+      </div>
+      <p><strong>U</strong> is not in the word in any spot.</p>
+
+      <button class="go-btn" onclick="goToGame()">Let’s Go ➜</button>
+    </div>
+
+    <script>
+      function goToGame() {
+        window.location.href = "/content";
+      }
+    </script>
+  </body>
+</html>
