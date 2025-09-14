@@ -44,7 +44,7 @@ const getLoginCallback = async (req, res) => {
   } = req.cookies;
 
   if (!code || !storedState || state !== storedState || !storedCodeVerifier) {
-    req.flash(
+    res.flash(
       "errors",
       "Couldn't login with Google because of invalid login attempt. Please try again!"
     );
@@ -54,7 +54,7 @@ const getLoginCallback = async (req, res) => {
   try {
     tokens = await google.validateAuthorizationCode(code, storedCodeVerifier);
   } catch (err) {
-    req.flash(
+    res.flash(
       "errors",
       "Couldn't login with Google because of invalid login attempt. Please try again!"
     );
@@ -94,12 +94,12 @@ async function loginWithEmail(req, res) {
     }
 
     if (!user) {
-      req.flash("errors", "No account found with this email.");
+      res.flash("errors", "No account found with this email.");
       return res.redirect("/login");
     }
 
     if (!user.password) {
-      req.flash(
+      res.flash(
         "errors",
         "This account was created using Google. Please continue with Google login."
       );
@@ -107,20 +107,30 @@ async function loginWithEmail(req, res) {
     }
 
     if (user.password !== password) {
-      req.flash("errors", "Invalid email or password.");
+      res.flash("errors", "Invalid email or password.");
       return res.redirect("/login");
     }
 
-    req.session.user = {
-      id: user.user_id,
-      email: user.email,
-      name: user.name,
-    };
+    res.cookie(
+      "user",
+      JSON.stringify({
+        id: user.user_id,
+        email: user.email,
+        name: user.name,
+      }),
+      {
+        httpOnly: true,
+        secure: true,
+        sameSite: "lax",
+        maxAge: 1000 * 60 * 60, // 1 hour
+      }
+    );
 
+    res.flash("success", "Welcome back!");
     return res.redirect("/content");
   } catch (err) {
     console.error("❌ Login error:", err.message);
-    req.flash("errors", "Something went wrong. Please try again.");
+    res.flash("errors", "Something went wrong. Please try again.");
     return res.redirect("/login");
   }
 }
