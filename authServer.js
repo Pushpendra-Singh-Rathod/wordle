@@ -11,7 +11,7 @@ require("dotenv").config();
 const google = new arctic.Google(
   process.env.GOOGLE_CLIENT_ID,
   process.env.GOOGLE_CLIENT_SECRET,
-  "http://localhost:3000/google/callback"
+  process.env.GOOGLE_REDIRECT_UR
 );
 const getLoginPage = async (req, res) => {
   if (req.user) return res.redirect("/");
