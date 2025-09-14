@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wordle Registration</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #f5f9f0 0%, #e6f4e6 100%);
+        padding: 20px;
+      }
+
+      .container {
+        background-color: white;
+        border-radius: 15px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+        width: 100%;
+        max-width: 450px;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .close-btn {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: rgba(255, 255, 255, 0.2);
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        cursor: pointer;
+        z-index: 10;
+        transition: all 0.3s;
+      }
+
+      .close-btn:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: rotate(90deg);
+      }
+
+      .header {
+        background: linear-gradient(135deg, #38cf77 0%, #1b6138 100%);
+        padding: 30px;
+        text-align: center;
+        color: white;
+        position: relative;
+      }
+
+      .header h2 {
+        font-weight: 600;
+        font-size: 28px;
+        letter-spacing: 0.5px;
+      }
+
+      .header p {
+        margin-top: 8px;
+        opacity: 0.9;
+        font-size: 15px;
+      }
+
+      .registration-form {
+        padding: 30px;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+        position: relative;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #2c3e50;
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      .form-group input {
+        width: 100%;
+        padding: 14px 15px;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 15px;
+        transition: all 0.3s;
+        background-color: #f9fcf8;
+      }
+
+      .form-group input:focus {
+        border-color: #38cf77;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(20, 74, 24, 0.2);
+      }
+
+      .form-group i {
+        position: absolute;
+        right: 15px;
+        top: 40px;
+        color: #95a5a6;
+      }
+
+      .terms {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 20px;
+      }
+
+      .terms input {
+        margin-top: 4px;
+        margin-right: 10px;
+      }
+
+      .terms label {
+        font-size: 14px;
+        color: #2c3e50;
+        line-height: 1.5;
+      }
+
+      .terms a {
+        color: #38cf77;
+        text-decoration: none;
+      }
+
+      .terms a:hover {
+        text-decoration: underline;
+      }
+
+      .btn {
+        width: 100%;
+        padding: 14px;
+        background: linear-gradient(135deg, #38cf77 0%, #1e6238 100%);
+        border: none;
+        border-radius: 8px;
+        color: white;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        box-shadow: 0 4px 12px rgba(52, 152, 219, 0.25);
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(52, 152, 219, 0.35);
+      }
+
+      .btn:active {
+        transform: translateY(0);
+      }
+
+      .divider {
+        display: flex;
+        align-items: center;
+        margin: 25px 0;
+      }
+
+      .divider span {
+        flex: 1;
+        height: 1px;
+        background-color: #e0e0e0;
+      }
+
+      .divider p {
+        margin: 0 15px;
+        color: #7f8c8d;
+        font-size: 14px;
+      }
+
+      .social-registration {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+
+      .social-btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        border: 1px solid #e0e0e0;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-size: 18px;
+        color: #2c3e50;
+        background: white;
+      }
+
+      .social-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+      }
+
+      .google:hover {
+        color: #db4437;
+        border-color: #db4437;
+      }
+
+      .github:hover {
+        color: #333;
+        border-color: #333;
+      }
+
+      .facebook:hover {
+        color: #4267b2;
+        border-color: #4267b2;
+      }
+
+      .login-link {
+        text-align: center;
+        margin-top: 25px;
+        font-size: 15px;
+        color: #7f8c8d;
+      }
+
+      .login-link a {
+        color: #38cf77;
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .login-link a:hover {
+        text-decoration: underline;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 20px;
+        border-top: 1px solid #ecf0f1;
+        color: #7f8c8d;
+        font-size: 13px;
+      }
+
+      @media (max-width: 480px) {
+        .container {
+          border-radius: 10px;
+        }
+
+        .registration-form {
+          padding: 25px 20px;
+        }
+
+        .header {
+          padding: 25px 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="close-btn">
+        <i class="fas fa-times"></i>
+      </div>
+
+      <div class="header">
+        <h2>Create Account</h2>
+        <p>Join us to access exclusive features</p>
+      </div>
+
+      <form class="registration-form" action="/register" method="post">
+        <div class="form-group">
+          <label for="fullname">Full Name</label>
+          <input
+            type="text"
+            id="fullname"
+            name="fullname"
+            placeholder="Enter your full name"
+            required
+          />
+          <i class="fas fa-user"></i>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Enter your email"
+            required
+          />
+          <i class="fas fa-envelope"></i>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Create a strong password"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="confirm-password">Confirm Password</label>
+          <input
+            type="password"
+            id="confirm-password"
+            name="confirmPassword"
+            placeholder="Confirm your password"
+            required
+          />
+          <i class="fas fa-lock"></i>
+        </div>
+
+        <div class="terms">
+          <input type="checkbox" id="terms" required />
+          <label for="terms"
+            >I agree to the <a href="#">Terms of Service</a> and
+            <a href="#">Privacy Policy</a></label
+          >
+        </div>
+
+        <button type="submit" class="btn">Create Account</button>
+
+        <div class="divider">
+          <span></span>
+          <p>Or sign up with</p>
+          <span></span>
+        </div>
+
+        <div class="social-registration">
+          <a href="/google">
+            <i class="fab fa-google"></i>
+          </a>
+          <button type="button" class="social-btn github">
+            <a href="/github">
+              <i class="fab fa-github"></i>
+            </a>
+          </button>
+        </div>
+
+        <div class="login-link">
+          Already have an account? <a href="/login">Log in</a>
+        </div>
+      </form>
+
+      <div class="footer">
+        <p>© 2025 Wordle Registration. All rights reserved.</p>
+      </div>
+    </div>
+  </body>
+</html>
