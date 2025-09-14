@@ -27,7 +27,7 @@ app.use((req, res, next) => {
   if (req.cookies.flash) {
     try {
       const flash = JSON.parse(req.cookies.flash);
-      res.locals[flash.type] = [flash.message]; // mimic req.flash behavior
+      res.locals[flash.type] = [flash.message];
     } catch (e) {
       res.locals.errors = [];
       res.locals.success = [];
@@ -51,7 +51,10 @@ app.get("/", (req, res) => {
 
 app.get("/login", (req, res) => {
   try {
-    res.render("login");
+    res.render("login", {
+      errors: res.locals.errors,
+      success: res.locals.success,
+    });
   } catch (error) {
     throw error;
   }
@@ -67,7 +70,10 @@ app.get("/content", (req, res) => {
 
 app.get("/register", (req, res) => {
   try {
-    res.render("register");
+    res.render("register", {
+      errors: res.locals.errors,
+      success: res.locals.success,
+    });
   } catch (error) {
     throw error;
   }
@@ -81,15 +87,7 @@ app.post("/register", (req, res) => {
     return res.redirect("/register");
   }
 
-  addUser(fullname, email, password, (err, userId) => {
-    if (err) {
-      console.error("❌ Error inserting user:", err.message);
-      return res.status(500).send("Database error");
-    }
-    console.log(`✅ Success! User added with ID: ${userId}`);
-    res.flash("success", "Registration successful! Please log in.");
-    res.redirect("/login");
-  });
+  addUser(fullname, email, password, res);
 });
 
 app.post("/login", loginWithEmail);

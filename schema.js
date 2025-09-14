@@ -23,20 +23,57 @@ function createConnection() {
   return connection;
 }
 
-function addUser(name, email, password, callback) {
-  const db = createConnection();
-  const sql = `INSERT INTO Users (name, email, password) VALUES (?, ?, ?)`;
+function addUser(name, email, password, res) {
+  let emailregex =
+    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@(([^<>()[\]\\.,;:\s@"]+\.)+[^<>()[\]\\.,;:\s@"]{2,})$/;
 
-  db.query(sql, [name, email, password || null], (err, result) => {
-    if (err) {
-      console.error("❌ Error inserting user:", err.message);
-      return callback(err, null);
+    if(!emailregex.test(email)){
+        res.flash("errors", "Please enter a valid email address!");
+        return res.redirect("/register");
     }
-    console.log("✅ User inserted with ID:", result.insertId);
-    callback(null, result.insertId);
-    db.end();
+
+  // Null / empty check
+  if (!name || !email || !password) {
+    res.flash("errors", "All fields are required!");
+    return res.redirect("/register");
+  }
+
+  const db = createConnection();
+
+  // 1️⃣ Check for duplicate email
+  const checkSql = `SELECT * FROM Users WHERE email = ? LIMIT 1`;
+  db.query(checkSql, [email], (err, results) => {
+    if (err) {
+      console.error("❌ Error checking email:", err.message);
+      res.flash("errors", "Database error! Try again.");
+      db.end();
+      return res.redirect("/register");
+    }
+
+    if (results.length > 0) {
+      res.flash("errors", "Email already registered!");
+      db.end();
+      return res.redirect("/register");
+    }
+
+    // 2️⃣ Insert new user
+    const insertSql = `INSERT INTO Users (name, email, password) VALUES (?, ?, ?)`;
+    db.query(insertSql, [name, email, password], (err, result) => {
+      if (err) {
+        console.error("❌ Error inserting user:", err.message);
+        res.flash("errors", "Database error! Try again.");
+        db.end();
+        return res.redirect("/register");
+      }
+
+      console.log("✅ User inserted with ID:", result.insertId);
+      res.flash("success", "Registration successful! Please log in.");
+      db.end();
+      return res.redirect("/login");
+    });
   });
 }
+
 
 function createUserWithOauth({
   name,

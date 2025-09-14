@@ -342,9 +342,12 @@
         </div>
 
         <div class="social-registration">
-          <a href="/google">
-            <i class="fab fa-google"></i>
-          </a>
+          <button type="button" class="social-btn github">
+            <a href="/google">
+              <i class="fab fa-google"></i>
+            </a>
+          </button>
+
           <button type="button" class="social-btn github">
             <a href="/github">
               <i class="fab fa-github"></i>
@@ -361,5 +364,22 @@
         <p>© 2025 Wordle Registration. All rights reserved.</p>
       </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+      <% if (errors && errors.length > 0) { %>
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: "<%= errors.join('\\n') %>"
+        });
+      <% } else if (success && success.length > 0) { %>
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: "<%= success.join('\\n') %>"
+        });
+      <% }  %>
+    </script>
   </body>
 </html>
