@@ -11,25 +11,8 @@ body {
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
-
+  overflow: hidden;
   color: #ffffff;
-}
-
-.navbar {
-  height: 50px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.nav {
-  width: 100%;
-  max-width: 500px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
 }
 
 .container {
@@ -52,6 +35,23 @@ body {
   flex: 1;
   max-width: 280px;
   margin-top: 2rem;
+}
+
+.navbar {
+  height: 60px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.nav {
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
 }
 
 .row {
@@ -140,10 +140,10 @@ body {
 
 .keyboard {
   width: 100%;
-  max-width: 500px;
-  margin: 0 auto;
+  max-width: 600px;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 8px;
   padding: 8px;
 }
@@ -152,7 +152,6 @@ body {
   display: flex;
   justify-content: center;
   gap: 6px;
-  width: 100%;
 }
 
 .key {
@@ -176,6 +175,7 @@ body {
 .key.wide {
   flex: 1.5;
   font-size: 0.75rem;
+  min-width: 70px;
 }
 
 .key.correct {
@@ -211,21 +211,26 @@ body {
 }
 
 /* Responsive adjustments */
-@media (max-width: 480px) {
+@media (max-width: 500px) {
+  .nav {
+    max-width: 350px;
+  }
+
   .tile {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     font-size: 1.5rem;
   }
 
   .key {
-    height: 50px;
-    min-width: 30px;
+    height: 40px;
+    min-width: 20px;
     font-size: 0.8rem;
   }
 
   .key.wide {
-    font-size: 0.7rem;
+    flex: 1;
+    min-width: 45px;
   }
 }
 
@@ -267,4 +272,118 @@ body {
     opacity: 0;
     transform: translateY(-20px);
   }
+}
+
+/* ===== Navbar & Nav ===== */
+
+.restart,
+.tog-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: #fff;
+  color: #3a3a3c;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.restart:active,
+.tog-btn:active {
+  transform: scale(0.95);
+}
+
+.restart i {
+  font-size: 1rem;
+}
+
+.tog-btn i {
+  font-size: 1.2rem;
+}
+
+.restart p,
+.tog-btn p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+/* ===== DARK MODE ===== */
+body.dark-mode {
+  background-color: #121213;
+  color: #fff;
+}
+
+/* Tiles default state in dark mode */
+body.dark-mode .tile {
+  background-color: #121213;
+  border: 2px solid #3a3a3c;
+  color: #fff;
+}
+
+body.dark-mode .para {
+  background-color: #121213;
+  color: #fff;
+}
+
+/* Flipped tiles keep Wordle colors */
+body.dark-mode .tile.correct {
+  background-color: #3ca232ff; /* green */
+  border-color: #528a4d;
+  color: #fff;
+}
+body.dark-mode .tile.present {
+  background-color: #cbac21; /* yellow */
+  border-color: #c9b458;
+  color: #fff;
+}
+body.dark-mode .tile.absent {
+  background-color: #787c7e; /* gray */
+  border-color: #787c7e;
+  color: #fff;
+}
+
+/* Keyboard keys in dark mode */
+body.dark-mode .key {
+  background-color: #3a3a3c;
+  color: #fff;
+}
+body.dark-mode .key.correct {
+  background-color: #3ca232ff;
+  color: #fff;
+}
+body.dark-mode .key.present {
+  background-color: #cbac21;
+  color: #fff;
+}
+body.dark-mode .key.absent {
+  background-color: #787c7e;
+  color: #fff;
+}
+
+/* Navbar Buttons in dark mode */
+body.dark-mode .restart,
+body.dark-mode .tog-btn {
+  background-color: #3a3a3c;
+  color: #fff;
+}
+
+body.dark-mode .restart:hover,
+body.dark-mode .tog-btn:hover {
+  background-color: #565758;
+}
+
+/* In light mode, buttons are opposite */
+.restart,
+.tog-btn {
+  background-color: #fff;
+  color: #3a3a3c;
+}
+
+.restart:hover,
+.tog-btn:hover {
+  background-color: #f0f0f0;
 }

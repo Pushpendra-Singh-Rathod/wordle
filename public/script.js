@@ -3,20 +3,20 @@ document.addEventListener("DOMContentLoaded", async () => {
   let currentTile = 0;
   let currentRow = 0;
   let hidden_word = "";
-  let words=[];
-  let common_words=[];
-  let wordss=new Set();
+  let words = [];
+  let common_words = [];
+  let wordss = new Set();
 
-  try{
-    const res=await fetch("./words.json");
-    const data=await res.json();
-    words=data.words;
-    common_words=data.common_words;
-    wordss=new Set([...words,...common_words]);
-    hidden_word=common_words[Math.floor(Math.random()*common_words.length)];
-  }catch(err){
-    console.log("failed to load word List",err);
-    showMessage("Failed to Load word List",true);
+  try {
+    const res = await fetch("./words.json");
+    const data = await res.json();
+    words = data.words;
+    common_words = data.common_words;
+    wordss = new Set([...words, ...common_words]);
+    hidden_word = common_words[Math.floor(Math.random() * common_words.length)];
+  } catch (err) {
+    console.log("failed to load word List", err);
+    showMessage("Failed to Load word List", true);
   }
 
   function initGame() {
@@ -160,10 +160,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!key) return;
 
     if (status === "correct") {
-      key.classList.remove("present","absent");
+      key.classList.remove("present", "absent");
       key.classList.add("correct");
     } else if (status === "present") {
-      if (!key.classList.contains("correct") && !key.classList.contains("present")) {
+      if (
+        !key.classList.contains("correct") &&
+        !key.classList.contains("present")
+      ) {
         key.classList.add("present");
       }
     } else if (status === "absent") {
@@ -205,4 +208,46 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
   initGame();
+
+  function resetGame () {
+    currentTile = 0;
+    currentRow = 0;
+    document.querySelectorAll(".tile").forEach((tile) => {
+      tile.textContent = "";
+      delete tile.dataset.letter;
+      tile.classList.remove("correct", "present", "absent", "flip", "shake");
+    });
+
+    document.querySelectorAll(".key").forEach((key) => {
+      key.classList.remove("correct", "present", "absent");
+    });
+
+    const msgContainer = document.querySelector(".message-container");
+    if (msgContainer) msgContainer.innerHTML = "";
+  }
+
+
+  const bgBtn = document.querySelector(".tog-btn");
+  const toggleIcon = document.querySelector(".switch");
+  bgBtn.addEventListener("click", () => {
+    document.body.classList.toggle("dark-mode");
+
+    if (document.body.classList.contains("dark-mode")) {
+      toggleIcon.classList.remove("fa-toggle-on");
+      toggleIcon.classList.add("fa-toggle-off");
+    } else {
+      toggleIcon.classList.remove("fa-toggle-off");
+      toggleIcon.classList.add("fa-toggle-on");
+    }
+  });
+
+  const restart = document.querySelector(".restart");
+  restart.addEventListener("click", () => {
+    resetGame();
+    hidden_word = common_words[Math.floor(Math.random() * common_words.length)];
+    isGameOver=false;
+    initGame();
+  });
+
+
 });

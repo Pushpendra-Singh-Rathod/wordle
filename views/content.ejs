@@ -9,11 +9,21 @@
       href="images/wordle-favicon.x-icon"
       type="image/x-icon"
     />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title data-testid="page-title">Wordle — The New York Times</title>
   </head>
   <body>
     <div class="navbar">
-      <div class="nav"></div>
+      <div class="nav">
+        <button class="restart" >
+          <i class="fa-solid fa-rotate"></i>
+          <p class=".text">Restart</p>
+        </button>
+        <button class="tog-btn">
+          <i class="fa-solid fa-toggle-on switch"></i>
+            <p class=".text">Change Background</p> 
+        </button>
+      </div>
     </div>
     <div class="container">
       <div class="model">
@@ -92,7 +102,7 @@
 
         <!-- Row 3 -->
         <div class="key-row">
-          <button class="key wide" data-key="Enter">Enter</button>
+          <button class="key wide Enter" data-key="Enter">Enter</button>
           <button class="key" data-key="z">z</button>
           <button class="key" data-key="x">x</button>
           <button class="key" data-key="c">c</button>
