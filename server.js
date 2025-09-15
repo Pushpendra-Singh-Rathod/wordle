@@ -2,9 +2,11 @@ require("dotenv").config();
 const cookieParser = require("cookie-parser");
 const { addUser } = require("./schema.js");
 const {
-  getLoginPage,
-  getLoginCallback,
+  getGoogleLoginPage,
+  getGoogleLoginCallback,
   loginWithEmail,
+  getGithubLoginPage,
+  getGithubLoginCallback,
 } = require("./authServer.js");
 const express = require("express");
 const app = express();
@@ -92,9 +94,11 @@ app.post("/register", (req, res) => {
 
 app.post("/login", loginWithEmail);
 
-app.get("/google", getLoginPage);
-app.get("/google/callback", getLoginCallback);
+app.get("/google", getGoogleLoginPage);
+app.get("/google/callback", getGoogleLoginCallback);
 
+app.get("/github", getGithubLoginPage);
+app.get("/github/callback", getGithubLoginCallback);
 app.listen(port, (req, res) => {
   console.log(`Listening at ${port}`);
 });
