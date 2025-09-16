@@ -270,7 +270,7 @@ const getLinkedInLoginPage = async (req, res) => {
     sameSite: "lax",
   };
   res.cookie("linkedin_oauth_state", state, cookieConfig);
-  console.log("LinkedIn Auth URL:", url.toString());
+  
   res.redirect(url.toString());
 };
 
