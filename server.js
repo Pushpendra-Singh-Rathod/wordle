@@ -7,6 +7,8 @@ const {
   loginWithEmail,
   getGithubLoginPage,
   getGithubLoginCallback,
+  getLinkedInLoginPage,
+  getLinkedInLoginCallback,
 } = require("./authServer.js");
 const express = require("express");
 const app = express();
@@ -99,6 +101,10 @@ app.get("/google/callback", getGoogleLoginCallback);
 
 app.get("/github", getGithubLoginPage);
 app.get("/github/callback", getGithubLoginCallback);
+
+app.get("/linkedin", getLinkedInLoginPage);
+app.get("/linkedin/callback", getLinkedInLoginCallback);
+
 app.listen(port, (req, res) => {
   console.log(`Listening at ${port}`);
 });

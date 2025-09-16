@@ -13,11 +13,16 @@ const google = new arctic.Google(
   process.env.GOOGLE_CLIENT_SECRET,
   process.env.GOOGLE_REDIRECT_URL
 );
-
 const github = new arctic.GitHub(
   process.env.GITHUB_CLIENT_ID,
   process.env.GITHUB_CLIENT_SECRET,
   process.env.GITHUB_REDIRECT_URL
+);
+
+const linkedin = new arctic.LinkedIn(
+  process.env.LINKEDIN_CLIENT_ID,
+  process.env.LINKEDIN_CLIENT_SECRET,
+  process.env.LINKEDIN_REDIRECT_URL
 );
 
 const getGoogleLoginPage = async (req, res) => {
@@ -247,10 +252,105 @@ const getGithubLoginCallback = async (req, res) => {
   res.redirect("/content");
 };
 
+
+
+const getLinkedInLoginPage = async (req, res) => {
+  if (req.user) return res.redirect("/");
+
+  const state = arctic.generateState();
+  const scopes = ["openid", "profile", "email"]; // Use recommended scopes from docs
+
+  // CORRECT: Only 2 parameters as per documentation
+  const url = linkedin.createAuthorizationURL(state, scopes);
+
+  const cookieConfig = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    maxAge: 10 * 60 * 1000,
+    sameSite: "lax",
+  };
+  res.cookie("linkedin_oauth_state", state, cookieConfig);
+  console.log("LinkedIn Auth URL:", url.toString());
+  res.redirect(url.toString());
+};
+
+const getLinkedInLoginCallback = async (req, res) => {
+  const { code, state } = req.query;
+
+  const { linkedin_oauth_state: storedState } = req.cookies;
+
+  if (!code || !storedState || state !== storedState) {
+    res.flash(
+      "errors",
+      "Couldn't login with LinkedIn because of invalid login attempt. Please try again!"
+    );
+    return res.redirect("/login");
+  }
+
+  let tokens;
+  try {
+    // CORRECT: Only 1 parameter as per documentation
+    tokens = await linkedin.validateAuthorizationCode(code);
+  } catch (err) {
+    console.error(err);
+    res.flash(
+      "errors",
+      "Couldn't login with LinkedIn because of invalid login attempt. Please try again!"
+    );
+    return res.redirect("/login");
+  }
+
+  const accessToken = tokens.accessToken();
+
+  // Fetch user profile using OpenID Connect as per documentation
+  try {
+    const response = await fetch("https://api.linkedin.com/v2/userinfo", {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`LinkedIn API error: ${response.status}`);
+    }
+
+    const user = await response.json();
+    const { sub: linkedInUserId, name, email } = user;
+
+    // Optional: Decode ID token if needed
+    const idToken = tokens.idToken();
+    const claims = arctic.decodeIdToken(idToken);
+
+    let existingUser = await getUserWithOauthId(email, "linkedin");
+
+    if (existingUser && !existingUser.providerAccountId) {
+      await linkUserWithOauth(existingUser.user_id, "linkedin", linkedInUserId);
+    }
+
+    if (!existingUser) {
+      await createUserWithOauth({
+        name: name,
+        email: email,
+        password: null,
+        provider: "linkedin",
+        providerAccountId: linkedInUserId,
+      });
+    }
+
+    res.redirect("/content");
+  } catch (error) {
+    console.error("Error fetching LinkedIn profile:", error);
+    res.flash("errors", "Failed to fetch user profile from LinkedIn");
+    return res.redirect("/login");
+  }
+};
+
 module.exports = {
   getGoogleLoginPage,
   getGoogleLoginCallback,
   loginWithEmail,
   getGithubLoginPage,
   getGithubLoginCallback,
+  getLinkedInLoginPage,
+  getLinkedInLoginCallback,
 };
